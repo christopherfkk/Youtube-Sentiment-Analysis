@@ -1,0 +1,57 @@
+{
+    "sample commentThreads.list() response": {
+        "kind": "youtube#commentThreadListResponse",
+        "etag": etag,
+        "nextPageToken": string,
+        "pageInfo": {
+            "totalResults": integer,
+            "resultsPerPage": integer
+        },
+        "items": [
+            "commentThread Resource"
+        ]
+    },
+
+    "sample 'commentThread' resource object": {
+        "kind": "youtube#commentThread",
+        "etag": etag,
+        "id": string,
+        "snippet": {
+            "channelId": string,
+            "videoId": string,
+            "topLevelComment": comments Resource,
+            "canReply": boolean,
+            "totalReplyCount": unsigned integer,
+            "isPublic": boolean
+        },
+        "replies": {
+            "comments": [
+                "'comments' resource"
+            ]
+        }
+    },
+    "sample 'comments' resource object": {
+        "kind": "youtube#comment",
+        "etag": etag,
+        "id": string,
+        "snippet": {
+            "authorDisplayName": string,
+            "authorProfileImageUrl": string,
+            "authorChannelUrl": string,
+            "authorChannelId": {
+                "value": string
+            },
+            "channelId": string,
+            "videoId": string,
+            "textDisplay": string,
+            "textOriginal": string,
+            "parentId": string,
+            "canRate": boolean,
+            "viewerRating": string,
+            "likeCount": unsigned integer,
+            "moderationStatus": string,
+            "publishedAt": datetime,
+            "updatedAt": datetime
+        }
+    }
+}
