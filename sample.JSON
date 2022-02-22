@@ -71,5 +71,50 @@
                 string
             ]
         }
-    }
+    },
+    "sample 'video' resource object": {
+        "kind": 'youtube#videoListResponse', 'etag': 'Tz9umnjXA4pyPqjKY5e-hBvASXI', 'items': [
+        {'kind': 'youtube#video', 
+            'etag': '0gKX5IAbF4ATBuUoBfUtyCfiZ7c', 
+            'id': 'ycPr5-27vSI', 
+            'snippet': {'publishedAt': '2018-09-07T08: 12: 43Z', 
+                'channelId': 'UCzQUP1qoWDoEbmsQxvdjxgQ', 
+                'title': 'Joe Rogan Experience #1169 - Elon Musk', 
+                'description': 'Elon Musk is a business magnet, investor and engineer.', 
+                'thumbnails': {
+                    'default': {
+                        'url': 'https: //i.ytimg.com/vi/ycPr5-27vSI/default.jpg', 
+                        'width': 120, 'height': 90
+                    }, 
+                        'medium': {
+                            'url': 'https: //i.ytimg.com/vi/ycPr5-27vSI/mqdefault.jpg', 
+                            'width': 320, 'height': 180
+                    }, 
+                        'high': {
+                            'url': 'https: //i.ytimg.com/vi/ycPr5-27vSI/hqdefault.jpg', 
+                            'width': 480, 
+                            'height': 360
+                    }, 
+                        'standard': {
+                            'url': 'https: //i.ytimg.com/vi/ycPr5-27vSI/sddefault.jpg', 
+                            'width': 640, 'height': 480
+                    }
+                }, 
+                        'channelTitle': 'PowerfulJRE', 
+                        'tags': ['Joe Rogan Experience', 'Joe Rogan', 'JRE #1169', 'Elon Musk', 'Tesla', 'The Boring Company', 'Not a Flamethrower', 'Space X', 'comedy', 'comedian', 'jokes', 'stand up', 'funny', 'UFC', 'mma', 'Ultimate Fighting Championship'
+                ], 
+                        'categoryId': '22', 
+                        'liveBroadcastContent': 'none', 
+                        'localized': {
+                            'title': 'Joe Rogan Experience #1169 - Elon Musk', 
+                            'description': 'Elon Musk is a business magnet, investor and engineer.'
+                }, 
+                        'defaultAudioLanguage': 'en'
+            }, 
+                'statistics': {'viewCount': '52253752', 'likeCount': '904851', 'favoriteCount': '0', 'commentCount': '131942'
+            }
+        }
+    ], 'pageInfo': {'totalResults': 1, 'resultsPerPage': 1}
 }
+}
+

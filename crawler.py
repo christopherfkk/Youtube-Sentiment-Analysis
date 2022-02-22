@@ -143,7 +143,7 @@ class ApiCrawler():
         youtube = build("youtube", "v3", developerKey=self.api_key)
 
         # get the video statistics
-        request = youtube.videos().list(part='statistics', id=video_id)
+        request = youtube.videos().list(part='snippet, statistics', id=video_id)
         response = request.execute()
 
         # return None if request has no result, e.g. private video
@@ -152,14 +152,10 @@ class ApiCrawler():
 
         items = response['items'][0]
 
+        name = items['snippet']['title']
+        date = items['snippet']['publishedAt'].rpartition('T')[0]
         view_count = items['statistics']['viewCount']
         like_count = items['statistics']['likeCount']
-        dislike_count = items['statistics']['dislikeCount']
         comment_count = items['statistics']['commentCount']
 
-        return view_count, like_count, dislike_count, comment_count
-
-crawler = ApiCrawler()
-# comments = crawler.get_comments("RcYjXbSJBN8") # Joe Rofan podcase with 89,925 comments + replies
-# comments = crawler.get_comments("ycPr5-27vSI", 100) # random Korean video with 118 comments + replies
-# print(comments)
+        return name, view_count, like_count, comment_count, date

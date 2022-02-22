@@ -62,7 +62,3 @@ class DBConnector():
         with self.engine.connect() as con:
             result = con.execute(sql_query)
         return result.fetchall()
-
-
-database = DBConnector()
-database.execute_sql_query("CREATE TABLE d_videos(id int NOT NULL AUTO_INCREMENT, video_id varchar(255), name varchar(255), views int, likes int, dislikes int, comments int, PRIMARY KEY(id))")
