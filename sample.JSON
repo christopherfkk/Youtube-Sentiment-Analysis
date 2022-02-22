@@ -11,7 +11,6 @@
             "commentThread Resource"
         ]
     },
-
     "sample 'commentThread' resource object": {
         "kind": "youtube#commentThread",
         "etag": etag,
@@ -52,6 +51,25 @@
             "moderationStatus": string,
             "publishedAt": datetime,
             "updatedAt": datetime
+        }
+    },
+    "sample 'channelSection' resource object": {
+        "kind": "youtube#channelSection",
+        "etag": etag,
+        "id": string,
+        "snippet": {
+            "type": string,
+            "channelId": string,
+            "title": string,
+            "position": unsigned integer
+        },
+        "contentDetails": {
+            "playlists": [
+                string
+            ],
+            "channels": [
+                string
+            ]
         }
     }
 }

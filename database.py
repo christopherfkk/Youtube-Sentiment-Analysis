@@ -1,13 +1,10 @@
 '''
-Great medium article to set up PostgreSQL and pgAdmin (GUI for PostgreSQL)
-https://towardsdatascience.com/a-practical-guide-to-getting-set-up-with-postgresql-a1bf37a0cfd7
-
 Requirements:
 - download postgreSQL and pgAdmin 4 https://www.postgresql.org/download/ 
 - pip install SQLAlchemy (ORM, or object-relational mapping - generates SQL statements)
 - pip install psycopg2 (database driver - sends SQL statements to the database)
 - pip install pandas
-- pip install mysqlclient (supporst mySQLdb dialent and clients)
+- pip install mysqlclient (supports mySQLdb dialect and clients)
 
 '''
 from sqlalchemy import create_engine
@@ -16,6 +13,7 @@ import pandas as pd
 import os
 import MySQLdb
 from secret import *
+
 
 class DBConnector():
 
@@ -49,10 +47,10 @@ class DBConnector():
     def insert_dataframe(self, dataframe, table_name) -> None:
         """ Inserts pandas dataframe into a postgreSQL database table"""
         dataframe.to_sql(
-            name = table_name, 
-            con = self.engine, 
-            if_exists = 'append', # 'fail' raises exception, 'replace' drops and recreates
-            index = True) # dataframe index as column
+            name=table_name,
+            con=self.engine,
+            if_exists='append',  # 'fail' raises exception, 'replace' drops and recreates
+            index=True)  # dataframe index as column
 
     def fetch_dataframe_from_query(self, sql_query) -> pd.DataFrame:
         """ Reads a select SQL query into a pandas dataframe"""
@@ -65,4 +63,6 @@ class DBConnector():
             result = con.execute(sql_query)
         return result.fetchall()
 
+
 database = DBConnector()
+database.execute_sql_query("CREATE TABLE d_videos(id int NOT NULL AUTO_INCREMENT, video_id varchar(255), name varchar(255), views int, likes int, dislikes int, comments int, PRIMARY KEY(id))")

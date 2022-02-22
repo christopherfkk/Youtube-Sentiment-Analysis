@@ -11,8 +11,10 @@ CREATE TABLE d_videos (
 
 CREATE TABLE d_comments (
     id int NOT NULL AUTO_INCREMENT,
+    video_id int,
     comment_id varchar(255),
     comment_raw varchar(255),
     comment_clean varchar(255),
-    polarity
+    polarity numeric,
+    FOREIGN KEY (video_id) REFERENCES d_videos (id)
 )
