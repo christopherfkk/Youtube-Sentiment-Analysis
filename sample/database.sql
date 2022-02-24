@@ -56,7 +56,7 @@ SELECT
     ins.sentiment
 FROM
     d_videos
-    RIGHT JOIN ins ON ins.video_id = d_videos.id
+    RIGHT JOIN ins ON ins.video_id = d_videos.video_id
 ON DUPLICATE KEY UPDATE
     comment_raw = ins.comment_raw
     comment_clean = ins.comment_clean
