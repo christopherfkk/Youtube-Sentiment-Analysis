@@ -21,4 +21,3 @@ class CommentAnalyzer:
 
 
 analyzer = CommentAnalyzer("  I am very FUNNY tell me otherwise love !! ;df")
-print(analyzer.clean())

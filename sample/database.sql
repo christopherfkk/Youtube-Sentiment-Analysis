@@ -6,7 +6,6 @@ CREATE TABLE d_videos (
     likes int,
     comments int,
     PRIMARY KEY (id)
-)
 
 CREATE TABLE d_comments (
     id int NOT NULL AUTO_INCREMENT,
@@ -18,4 +17,33 @@ CREATE TABLE d_comments (
     sentiment varchar(255),
     PRIMARY KEY (id),
     FOREIGN KEY (video_id) REFERENCES d_videos (id)
-)
+
+-- insert into d_comments with foreign key in d_videos
+
+WITH ins (
+    video_id,
+    comment_id,
+    comment_raw,
+    comment_clean,
+    polarity,
+    sentiment
+) AS (VALUE { formatted_values })
+INSERT INTO
+    d_comments (
+        video_id,
+        comment_id,
+        comment_raw,
+        comment_clean,
+        polarity,
+        sentiment
+    )
+SELECT
+    d_videos.id,
+    ins.comment_id,
+    ins.comment_raw,
+    ins.comment_clean,
+    ins.polarity,
+    ins.sentiment
+FROM
+    d_videos
+    RIGHT JOIN ins ON ins.video_id = d_videos.id
