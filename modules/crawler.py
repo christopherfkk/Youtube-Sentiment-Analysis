@@ -18,16 +18,13 @@ class ApiCrawler():
 
     @lru_cache  # retrieves cached output if arguments the same the second time
     def get_comments(self, video_id, n_requested):
-        """ Gets the top-level comments of a single video and returns an 
-        array of strings
-        e.g. [ {comment ID: first comment}, {comment ID: second comment}, ...]
+        """ Gets the top-level comments of a single video and returns two arrays
+        e.g. [ comment 1, comment 2, ...], [ comment_id 1, comment_id 2, ...]
         """
-
-        # intialize empty array to return comments
         comments = []
+        ids = []
 
-        # create youtube resource object
-        youtube = build('youtube', 'v3', developerKey=self.api_key)
+        youtube = build('youtube', 'v3', developerKey=self.api_key) # create youtube resource object
 
         # retrieve youtube video results
         video_response = youtube.commentThreads().list(
@@ -37,24 +34,19 @@ class ApiCrawler():
             videoId=video_id
         ).execute()
 
-        # iterate video responses
         while video_response:
 
-            # extract required info from each result object
             for item in video_response['items']:
 
-                # extract comment resources from comment threat resource
                 comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
                 id = item['snippet']['topLevelComment']['id']
 
-                # append a single comment
-                comments.append({id: comment})
+                comments.append(comment)
+                ids.append(id)
+            
+            if 'nextPageToken' in video_response: # repeat if next page of comments exist
 
-            # repeat if next page of comments exist
-            if 'nextPageToken' in video_response:
-
-                # don't repeat larger than number of comments requested
-                if len(comments) >= n_requested:
+                if len(comments) >= n_requested: # don't repeat if larger than number of comments requested
                     video_response = False
 
                 else:
@@ -70,57 +62,42 @@ class ApiCrawler():
         # print(f"actual number: {len(comments)}")
         # print(f"requested number: {n_requested}")
 
-        return comments
+        return comments, ids
 
     @lru_cache
     def get_comments_and_replies(self, video_id, n_requested):
         """
-        Gets the top-level comments and replies of a single video and returns a 
-        nested array of strings.
-        E.g. [["first comment", ["first reply", "second reply"]], ["second
-        comment", ["first reply", "second reply"], [third...]]]
+        Gets the top-level comments and replies of a single video and returns a nested array of strings.
+        E.g. [["first comment", ["first reply", "second reply"]], ["second comment", ["first reply", "second reply"], [third...]]]
         """
 
-        # intialize empty array to return comments
         comments_replies = []
 
-        # create youtube resource object
-        youtube = build('youtube', 'v3', developerKey=self.api_key)
+        youtube = build('youtube', 'v3', developerKey=self.api_key) # create youtube resource object
 
-        # retrieve youtube video results
         video_response = youtube.commentThreads().list(
             maxResults=100,
             part='snippet, replies',
             videoId=video_id
         ).execute()
 
-        # iterate video responses
         while video_response:
 
-            # extract required info from each result object
             for item in video_response['items']:
 
-                # extract comment resources from comment threat resource
                 comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
-                # count number of replies of comment
                 replycount = item['snippet']['totalReplyCount']
 
                 replies = []
                 if replycount > 0:
-
-                    # iterate through all reply
                     for reply in item['replies']['comments']:
                         reply = reply['snippet']['textDisplay']
                         replies.append(reply)
 
-                # append a single comment and its replies
                 comments_replies.append([comment, replies])
+            if 'nextPageToken' in video_response: # repeat if next page of comments exist
 
-            # repeat if next page of comments exist
-            if 'nextPageToken' in video_response:
-
-                # don't repeat larger than number of comments requested
-                if len(comments_replies) >= n_requested:
+                if len(comments_replies) >= n_requested: # don't repeat if larger than number of comments requested
                     video_response = False
 
                 else:

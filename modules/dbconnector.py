@@ -26,12 +26,18 @@ class DBConnector():
         with self.engine.connect() as con:
             con.execute(sql_query)
 
-    def format_sql_values(self, lst):
-        """ Takes a string a convert into a string of tuples"""
-        values = tuple(lst)
-        values = str(values)[1:-1]
+    def insert_dataframe(self, dataframe, table_name) -> None:
+        """ Inserts pandas dataframe into a postgreSQL database table"""
+        dataframe.to_sql(
+            name=table_name,
+            con=self.engine,
+            if_exists='append',  # 'fail' raises exception, 'replace' drops and recreates
+            index=True)  # dataframe index as column
 
-        return values
+    def fetch_dataframe_from_query(self, sql_query) -> pd.DataFrame:
+        """ Reads a select SQL query into a pandas dataframe"""
+        dataframe = pd.read_sql(sql_query, self.engine)
+        return dataframe
 
     def execute_sql_from_file(self, sql_file) -> None:
         """ Executes a sql query from a sql script/file """
@@ -49,19 +55,6 @@ class DBConnector():
         except Exception as err:
             print(f'Failed to execute {script_name}')
             print(f'Error:\n{err}')
-
-    def insert_dataframe(self, dataframe, table_name) -> None:
-        """ Inserts pandas dataframe into a postgreSQL database table"""
-        dataframe.to_sql(
-            name=table_name,
-            con=self.engine,
-            if_exists='append',  # 'fail' raises exception, 'replace' drops and recreates
-            index=True)  # dataframe index as column
-
-    def fetch_dataframe_from_query(self, sql_query) -> pd.DataFrame:
-        """ Reads a select SQL query into a pandas dataframe"""
-        dataframe = pd.read_sql(sql_query, self.engine)
-        return dataframe
 
     def fetch_rows_from_query(self, sql_query) -> list:
         """ Reads a select SQL query and returns a list of tuples """

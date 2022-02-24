@@ -12,6 +12,20 @@ def insert_comments(video_lst):
     crawler = ApiCrawler()
     db = DBConnector()
 
+    values = []
+
+    for video_id in video_lst:
+        comments, ids = crawler.get_comments(video_id)
+
+        for i in range(len(comments)):
+
+            analyzer = CommentAnalyzer(comments[i])
+            value = tuple([video_id, ids[i], comments[i], analyzer.clean(), analyzer.get_polarity(), analyzer.get_sentiment()])
+            values.append(value)
+
+    formatted_values = str(values)[1:-1]
+    db.execute_sql_query(f"INSERT INTO d_comments")
+
 
 def insert_videos(video_lst):
     """ id (auto) | video_id | name | views | likes | comments | date"""
@@ -21,10 +35,8 @@ def insert_videos(video_lst):
 
     values = []
     for video_id in video_lst:
-        name, view_count, like_count, comment_count, date = crawler.get_stats(
-            video_id)
-        value = tuple([video_id, name, view_count,
-                      like_count, comment_count, date])
+        name, view_count, like_count, comment_count, date = crawler.get_stats(video_id)
+        value = tuple([video_id, name, view_count, like_count, comment_count, date])
         values.append(value)
 
     formatted_values = str(values)[1:-1]
