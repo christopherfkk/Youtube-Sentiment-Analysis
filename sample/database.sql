@@ -5,7 +5,8 @@ CREATE TABLE d_videos (
     views int,
     likes int,
     comments int,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id) 
+    UNIQUE (video_id)
 
 CREATE TABLE d_comments (
     id int NOT NULL AUTO_INCREMENT,
@@ -16,8 +17,17 @@ CREATE TABLE d_comments (
     polarity numeric,
     sentiment varchar(255),
     PRIMARY KEY (id),
-    FOREIGN KEY (video_id) REFERENCES d_videos (id)
+    FOREIGN KEY (video_id) REFERENCES d_videos (id) 
+    UNIQUE (comment_id)
+        
+-- upsert into d_videos
 
+INSERT INTO
+    d_videos(video_id, name, views, likes, comments, date)
+VALUES
+    { formatted_values } 
+ON DUPLICATE KEY UPDATE id=id
+    
 -- insert into d_comments with foreign key in d_videos
 
 WITH ins (
@@ -47,3 +57,8 @@ SELECT
 FROM
     d_videos
     RIGHT JOIN ins ON ins.video_id = d_videos.id
+ON DUPLICATE KEY UPDATE
+    comment_raw = ins.comment_raw
+    comment_clean = ins.comment_clean
+    polarity = ins.polarity
+    sentiment = ins.sentiment
