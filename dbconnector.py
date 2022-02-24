@@ -26,6 +26,13 @@ class DBConnector():
         with self.engine.connect() as con:
             con.execute(sql_query)
 
+    def format_sql_values(self, lst):
+        """ Takes a string a convert into a string of tuples"""
+        values = tuple(lst)
+        values = str(values)[1:-1]
+
+        return values
+
     def execute_sql_from_file(self, sql_file) -> None:
         """ Executes a sql query from a sql script/file """
         script_name = sql_file
@@ -35,7 +42,6 @@ class DBConnector():
         sql = open(sql_file, 'r').read()
 
         try:
-            # execute SQL commands
             with self.engine.connect() as con:
                 con.execute(sql)
             print(f'Successfully executed {script_name}')
