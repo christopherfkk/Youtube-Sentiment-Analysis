@@ -1,3 +1,5 @@
+-- d_videos table definition
+
 CREATE TABLE d_videos (
     id int NOT NULL AUTO_INCREMENT,
     video_id varchar(255),
@@ -5,8 +7,11 @@ CREATE TABLE d_videos (
     views int,
     likes int,
     comments int,
-    PRIMARY KEY (id) 
-    UNIQUE (video_id)
+    date date,
+    PRIMARY KEY (id), 
+    UNIQUE (video_id))
+
+-- d_comments table definition
 
 CREATE TABLE d_comments (
     id int NOT NULL AUTO_INCREMENT,
@@ -14,11 +19,11 @@ CREATE TABLE d_comments (
     comment_id varchar(255),
     comment_raw varchar(5000),
     comment_clean varchar(5000),
-    polarity numeric,
+    polarity decimal(5,3),
     sentiment varchar(255),
     PRIMARY KEY (id),
-    FOREIGN KEY (video_id) REFERENCES d_videos (id) 
-    UNIQUE (comment_id)
+    FOREIGN KEY (video_id) REFERENCES d_videos (id),
+    UNIQUE (comment_id))
         
 -- upsert into d_videos
 
@@ -28,16 +33,8 @@ VALUES
     { formatted_values } 
 ON DUPLICATE KEY UPDATE id=id
     
--- insert into d_comments with foreign key in d_videos
+-- upsert into d_comments with foreign key in d_videos
 
-WITH ins (
-    video_id,
-    comment_id,
-    comment_raw,
-    comment_clean,
-    polarity,
-    sentiment
-) AS (VALUE { formatted_values })
 INSERT INTO
     d_comments (
         video_id,
@@ -47,18 +44,10 @@ INSERT INTO
         polarity,
         sentiment
     )
-SELECT
-    d_videos.id,
-    ins.comment_id,
-    ins.comment_raw,
-    ins.comment_clean,
-    ins.polarity,
-    ins.sentiment
-FROM
-    d_videos
-    RIGHT JOIN ins ON ins.video_id = d_videos.video_id
-ON DUPLICATE KEY UPDATE
-    comment_raw = ins.comment_raw
-    comment_clean = ins.comment_clean
-    polarity = ins.polarity
-    sentiment = ins.sentiment
+VALUES
+    { formatted_values } 
+    ON DUPLICATE KEY UPDATE
+    comment_raw = comment_raw
+    comment_clean = comment_clean
+    polarity = polarity
+    sentiment = sentiment
