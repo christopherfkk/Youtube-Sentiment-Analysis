@@ -20,7 +20,6 @@ def insert_comments(video_lst):
             value = str([f"({fkey}, '{ids[i]}', '{comments[i]}', '{analyzer.clean()}', {analyzer.get_polarity()}, '{analyzer.get_sentiment()}')"])[2:-2]
             values.append(value)
 
-    values = values[:2]
     formatted_values = ", ".join(values)
     query = f"INSERT INTO testdatabase.d_comments (video_id, comment_id, comment_raw, comment_clean, polarity, sentiment) VALUES { formatted_values } ON DUPLICATE KEY UPDATE comment_raw = values(comment_raw), comment_clean = values(comment_clean), polarity = values(polarity), sentiment = values(sentiment)"
     
@@ -47,5 +46,6 @@ def insert_videos(video_lst):
 
 videos = ['ycPr5-27vSI', '-5yh2HcIlkU', 'efs3QRr8LWw', 'BEWz4SXfyCQ', 'RcYjXbSJBN8',
           'jdVso9FSkmE', '6T7pUEZfgdI', '7MNv4_rTkfU', 'vGc4mg5pul4', 'UQTfyjhvfH8']
+videos = ['ycPr5-27vSI']
 
 insert_comments(videos)
