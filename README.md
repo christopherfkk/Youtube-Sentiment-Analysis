@@ -7,5 +7,5 @@ DONE:
 - store data via SQLAlchemy and SQLite
 
 POTENTIALS:
-- hack a frontend to take any public YouTube link and visualize sentiments
+- hack a frontend to take any public YouTube link and visualize sentiments over timestamp
 - experiment and finetune sentiment analysis calculations
